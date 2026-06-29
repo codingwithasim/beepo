@@ -1,10 +1,10 @@
+import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 
 export default function Home() {
   return (
     <div>
-      <Button>Download</Button>
+      <AppShell/>
     </div>
   );
 }
