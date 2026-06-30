@@ -4,6 +4,7 @@ import { useUIStore } from "../stores/ui-store";
 import { PomodoroTool } from "../tools/pomodoro/pomodoro";
 import { StopwatchTool } from "../tools/stopwatch/stopwatch";
 import { TimerTool } from "../tools/timer/timer";
+import { WorldClockTool } from "../tools/world-clock/world-clock";
 
 
 export function Workspace() {
