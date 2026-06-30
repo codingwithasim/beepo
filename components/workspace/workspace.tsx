@@ -9,7 +9,7 @@ export function Workspace() {
   const activeTool = useUIStore((s) => s.activeTool);
 
   return (
-    <main className="flex-1 w-96 bg-amber-800 overflow-auto bg-muted/20 p-6">
+    <main className="flex-1 w-full overflow-auto bg-muted/20 p-6">
       <div className="mx-auto h-full max-w-6xl">
         {activeTool === "timer" && <TimerTool />}
         {activeTool === "stopwatch" && <StopwatchTool />}
