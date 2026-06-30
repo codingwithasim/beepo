@@ -8,7 +8,7 @@ import { Workspace } from "./workspace/workspace";
 
 export function AppShell() {
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex w-full h-screen overflow-hidden bg-background">
       {/* Left Sidebar */}
       <AppSidebar />
 

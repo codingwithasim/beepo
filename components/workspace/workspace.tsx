@@ -1,11 +1,22 @@
+"use client";
+
+import { useUIStore } from "../stores/ui-store";
+import { StopwatchTool } from "../tools/stopwatch/stopwatch";
+import { TimerTool } from "../tools/timer/timer";
+
+
 export function Workspace() {
+  const activeTool = useUIStore((s) => s.activeTool);
+
   return (
-    <div className="flex flex-1 items-center justify-center p-8">
-      <div className="flex h-full w-full items-center justify-center rounded-2xl border border-dashed">
-        <span className="text-muted-foreground">
-          Workspace
-        </span>
+    <main className="flex-1 w-96 bg-amber-800 overflow-auto bg-muted/20 p-6">
+      <div className="mx-auto h-full max-w-6xl">
+        {activeTool === "timer" && <TimerTool />}
+        {activeTool === "stopwatch" && <StopwatchTool />}
+        {activeTool === "pomodoro" && <PomodoroTool />}
+        {activeTool === "world-clock" && <WorldClockTool />}
+        {activeTool === "alarms" && <AlarmsTool />}
       </div>
-    </div>
+    </main>
   );
 }
