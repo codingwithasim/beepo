@@ -1,9 +1,9 @@
 "use client";
 
 import { TopBar } from "./header/top-bar";
-import { RightPanel } from "./panels/right-panel";
 import { AppSidebar } from "./sidebar/app-sidebar";
 import { Workspace } from "./workspace/workspace";
+import { RightPanel } from "@/components/right-panel/right-panel";
 
 
 export function AppShell() {

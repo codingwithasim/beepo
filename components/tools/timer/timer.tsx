@@ -6,11 +6,26 @@ import { TimerDisplay } from "./timer-display";
 import { TimerControls } from "./timer-controls";
 import { TimerStatus } from "./timer-status";
 import { TimerProgress } from "./timer-progress";
+import { useEffect } from "react";
 
 import { useTimer } from "./use-timer";
+import { useUIStore } from "@/components/stores/ui-store";
 
 export function TimerTool() {
   const timer = useTimer(25 * 60);
+
+  const setTimerActions = useUIStore((s) => s.setTimerActions);
+
+    useEffect(() => {
+      setTimerActions({
+        setDuration: timer.changeDuration,
+        addTime: timer.addTime, // 👈 NEW
+        start: timer.start,
+        reset: timer.reset,
+      });
+
+      return () => setTimerActions(undefined);
+    }, [timer]);
 
   return (
     <div className="flex h-full items-center justify-center">

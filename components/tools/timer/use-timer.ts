@@ -76,6 +76,19 @@ export function useTimer(initialSeconds: number) {
     setStatus("idle");
   }
 
+  function addTime(seconds: number) {
+    // always update duration baseline
+    setDuration((prev) => prev + seconds);
+
+    // if timer is running → adjust endTime (CRITICAL FIX)
+    if (status === "running" && endTimeRef.current) {
+      endTimeRef.current += seconds * 1000;
+    }
+
+    // update remaining visually immediately
+    setRemaining((prev) => prev + seconds);
+  }
+
   // ---------------------------
   // KEYBOARD SHORTCUTS
   // ---------------------------
@@ -110,5 +123,6 @@ export function useTimer(initialSeconds: number) {
     pause,
     reset,
     changeDuration,
+    addTime
   };
 }
