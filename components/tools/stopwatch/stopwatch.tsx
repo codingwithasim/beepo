@@ -1,9 +1,29 @@
+"use client";
+
+import { useStopwatch } from "./use-stopwatch";
+import { StopwatchDisplay } from "./stopwatch-display";
+import { StopwatchControls } from "./stopwatch-controls";
+
+import { Card, CardContent } from "@/components/ui/card";
+
 export function StopwatchTool() {
+  const sw = useStopwatch();
+
   return (
-    <div className="flex h-full items-center justify-center rounded-3xl border bg-card">
-      <h2 className="text-4xl font-bold">
-        Stopwatch
-      </h2>
+    <div className="flex h-full items-center justify-center">
+      <Card className="w-full max-w-4xl rounded-3xl">
+        <CardContent className="flex flex-col items-center gap-10 py-16">
+          
+          <StopwatchDisplay elapsed={sw.elapsed} />
+
+          <StopwatchControls
+            status={sw.status}
+            start={sw.start}
+            pause={sw.pause}
+            reset={sw.reset}
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 }
