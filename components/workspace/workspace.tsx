@@ -1,6 +1,7 @@
 "use client";
 
 import { useUIStore } from "../stores/ui-store";
+import { PomodoroTool } from "../tools/pomodoro/pomodoro";
 import { StopwatchTool } from "../tools/stopwatch/stopwatch";
 import { TimerTool } from "../tools/timer/timer";
 
