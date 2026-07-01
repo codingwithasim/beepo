@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Beepo ⏰
+
+Beepo is a modern productivity clock application built with **Next.js**, **React**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**. It brings together essential time management tools—including a timer, stopwatch, Pomodoro timer, world clock, and alarms—into a clean, responsive interface.
+
+> **Status:** 🚧 Currently under development.
+
+---
+
+## Features
+
+* ⏱️ Timer
+* 🕒 Stopwatch
+* 🍅 Pomodoro Timer
+* 🌍 World Clock
+* ⏰ Alarms *(coming soon)*
+* 🌙 Light & Dark Mode
+* ⚡ Fast and responsive UI
+* 🎨 Built with reusable, composable components
+
+---
+
+## Tech Stack
+
+* **Framework:** Next.js
+* **Language:** TypeScript
+* **UI:** React
+* **Styling:** Tailwind CSS
+* **Components:** shadcn/ui
+* **Icons:** Lucide React
+* **State Management:** Zustand
+
+---
+
+## Project Structure
+
+Each tool is organized into its own directory containing:
+
+* The main component
+* Display components
+* Control components
+* A dedicated custom hook for business logic
+
+This separation keeps UI and functionality modular and easy to maintain.
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Clone the repository
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```sh
+git clone https://github.com/codingwithasim/beepo.git
+cd beepo
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Install dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Start the development server
 
-## Learn More
+```sh
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open http://localhost:3000 in your browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Design Goals
 
-## Deploy on Vercel
+Beepo aims to be:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* Minimal and distraction-free
+* Fast and lightweight
+* Modular and maintainable
+* Easy to extend with new productivity tools
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Roadmap
+
+* [x] Timer
+* [x] Stopwatch
+* [x] Pomodoro
+* [x] World Clock
+* [ ] Alarms
+* [x] Dark Mode
+* [ ] Notifications
+* [ ] Keyboard shortcuts
+* [ ] Data persistence
+* [ ] User preferences
+
+---
+
+## Contributing
+
+Contributions, suggestions, and bug reports are welcome.
+
+If you'd like to contribute:
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Commit your changes.
+4. Open a Pull Request.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
