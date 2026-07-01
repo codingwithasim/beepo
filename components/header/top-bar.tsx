@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LucideMoon, Menu, Clock3 } from "lucide-react";
+import { LucideMoon, Menu, Clock3, Sun, Moon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/components/ui/sidebar";
 import { useUIStore } from "../stores/ui-store";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { useTheme } from "next-themes";
 
 const toolLabels: Record<string, string> = {
   timer: "Timer",
@@ -23,6 +24,7 @@ export function TopBar() {
 
   const [currentTime, setCurrentTime] = useState("");
   const [is24Hour, setIs24Hour] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => {
     const updateTime = () => {
@@ -88,14 +90,24 @@ export function TopBar() {
 
         <Tooltip>
           <TooltipTrigger render={
-            <Button variant="ghost" size="icon">
-              <LucideMoon className="h-5 w-5" />
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+              >
+              {resolvedTheme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
             </Button>
           }>
           </TooltipTrigger>
           <TooltipContent>
             <p>
-              Dark mode
+              {
+                resolvedTheme === "dark" ? "Light mode" : "Dark mode"
+              }
             </p>
           </TooltipContent>
         </Tooltip>

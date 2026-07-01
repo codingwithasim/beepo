@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans', display: "swap"});
 
@@ -20,12 +21,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn("h-full", "antialiased", inter.variable)}
     >
       <body className="min-h-full flex flex-col font-sans">
         <SidebarProvider>
           <TooltipProvider delay={1000}>
-            {children}
+            <ThemeProvider>
+              {children}
+            </ThemeProvider>            
           </TooltipProvider>
         </SidebarProvider>
         </body>
