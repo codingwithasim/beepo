@@ -56,7 +56,6 @@ export const ALL_CITIES: City[] = [
   { name: "Abu Dhabi", timezone: "Asia/Dubai", countryCode: "ae" },
   { name: "Riyadh", timezone: "Asia/Riyadh", countryCode: "sa" },
   { name: "Doha", timezone: "Asia/Qatar", countryCode: "qa" },
-  { name: "Tel Aviv", timezone: "Asia/Jerusalem", countryCode: "il" },
   { name: "Tehran", timezone: "Asia/Tehran", countryCode: "ir" },
 
   // 🌏 Asia
@@ -101,7 +100,6 @@ export function useWorldClock() {
     return new Intl.DateTimeFormat("en-US", {
       hour: "2-digit",
       minute: "2-digit",
-      second: "2-digit",
       timeZone: timezone,
     }).format(now);
   }
@@ -126,11 +124,37 @@ export function useWorldClock() {
     );
   }
 
+  function getTimeDifference(timezone: string) {
+  const now = new Date();
+
+  // current time in target timezone
+  const cityTime = new Date(
+    now.toLocaleString("en-US", { timeZone: timezone })
+  );
+
+  // current time in user's local timezone
+  const localTime = new Date(
+    now.toLocaleString("en-US", { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
+  );
+
+  const diffMs = cityTime.getTime() - localTime.getTime();
+  const diffHours = diffMs / (1000 * 60 * 60);
+
+  const rounded = Math.round(diffHours);
+
+  if (rounded === 0) return null;
+
+  const sign = rounded > 0 ? "+" : "-";
+
+  return `${sign}${Math.abs(rounded)}h`;
+}
+
   return {
     cities,
     getTime,
     addCity,
     removeCity,
     searchCities,
+    getTimeDifference
   };
 }

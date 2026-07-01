@@ -7,6 +7,7 @@ import { ClockItem } from "./clock-item";
 import { AddCityDialog } from "./add-city-dialog";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export function WorldClockTool() {
   const clock = useWorldClock();
@@ -47,10 +48,24 @@ export function WorldClockTool() {
               </div>
             </div>
 
+            {/* TIME Difference*/}
+            <div className="ml-auto">
+              {
+                clock.getTimeDifference(city.timezone)
+                &&
+                <Badge variant={"secondary"} className="text-xs ml-auto mr-4 text-muted-foreground">
+                    {clock.getTimeDifference(city.timezone)}
+                </Badge>
+              }
+            </div>
+            
+
             {/* TIME */}
-            <div className="ml-auto mr-4 text-bs font-semibold tabular-nums">
+            <div className=" mr-4 text-bs font-semibold tabular-nums">
               {clock.getTime(city.timezone)}
             </div>
+
+            
 
             {/* REMOVE BUTTON */}
             <Button

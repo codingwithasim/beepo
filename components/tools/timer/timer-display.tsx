@@ -1,3 +1,5 @@
+
+
 type Props = {
   remaining: number;
 };
@@ -16,7 +18,7 @@ export function TimerDisplay({ remaining }: Props) {
         Focus Timer
       </p>
 
-      <h1 className="font-mono text-8xl font-bold md:text-9xl">
+      <h1 className="text-8xl md:text-9xl">
         {formatted}
       </h1>
     </div>

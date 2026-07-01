@@ -18,7 +18,7 @@ export function PomodoroDisplay({
         Session {session} • {phase.toUpperCase()}
       </p>
 
-      <h1 className="font-mono text-8xl font-bold">
+      <h1 className="font-mono text-8xl md:text-9xl">
         {String(m).padStart(2, "0")}:
         {String(s).padStart(2, "0")}
       </h1>

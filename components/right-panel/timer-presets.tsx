@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useUIStore } from "../stores/ui-store";
+import { LucideComponent, LucideCross, LucideGauge, LucidePlus, X } from "lucide-react";
 
 const presets = [
   { label: "5 min", value: 5 * 60 },
@@ -16,11 +17,19 @@ export function TimerPresets() {
 
   return (
     <div className="space-y-3">
-      <p className="text-xs uppercase tracking-wider text-muted-foreground">
+      <p className="text-xs flex gap-2 tracking-wider text-muted-foreground">
+        <LucideComponent size={16}/>
         Presets
       </p>
 
-      <div className="flex flex-col gap-2">
+      <Button
+        variant={"ghost"}
+        className="text-gray-600 w-full cursor-pointer">
+          <LucidePlus/>
+        Create new preset
+      </Button>
+
+      <div className="flex flex-wrap gap-2">
         {presets.map((p) => (
           <Button
             key={p.value}
@@ -32,8 +41,9 @@ export function TimerPresets() {
         ))}
       </div>
 
-      <div className="pt-4 space-y-2">
-        <p className="text-xs uppercase tracking-wider text-muted-foreground">
+      <div className="pt-4 space-y-4 space-x-1">
+        <p className="text-xs flex gap-2 items-center tracking-wider text-muted-foreground">
+          <LucideGauge size={16}/>
           Quick Actions
         </p>
 

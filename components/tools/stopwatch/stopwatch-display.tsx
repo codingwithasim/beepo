@@ -10,7 +10,7 @@ export function StopwatchDisplay({ elapsed }: Props) {
   const ms = Math.floor((elapsed % 1000) / 10);
 
   return (
-    <h1 className="font-mono text-7xl font-bold md:text-8xl">
+    <h1 className="font-mono text-8xl md:text-9xl">
       {String(minutes).padStart(2, "0")}:
       {String(seconds).padStart(2, "0")}.
       {String(ms).padStart(2, "0")}

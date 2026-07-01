@@ -8,7 +8,7 @@ export function RightPanel() {
   const activeTool = useUIStore((s) => s.activeTool);
 
   return (
-    <aside className="w-72 border-l bg-background p-4">
+    <aside className="w-96 border-l bg-background p-4">
       <h2 className="mb-4 text-sm font-medium text-muted-foreground">
         Controls
       </h2>
