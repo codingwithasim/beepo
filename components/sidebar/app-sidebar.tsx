@@ -69,10 +69,10 @@ export function AppSidebar() {
           {bottomNavigation.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
-                isActive={activeTool === item.tool}
-                tooltip={item.title}
-                onClick={() => setActiveTool(item.tool)}
-              >
+              //   isActive={activeTool === item.tool}
+              //   tooltip={item.title}
+              //   onClick={() => setActiveTool(item.tool)}
+               >
                 <item.icon className="size-4" />
                 <span>{item.title}</span>
               </SidebarMenuButton>

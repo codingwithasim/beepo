@@ -17,7 +17,7 @@ export function Workspace() {
         {activeTool === "stopwatch" && <StopwatchTool />}
         {activeTool === "pomodoro" && <PomodoroTool />}
         {activeTool === "world-clock" && <WorldClockTool />}
-        {activeTool === "alarms" && <AlarmsTool />}
+        {/* {activeTool === "alarms" && <AlarmsTool />} */}
       </div>
     </main>
   );

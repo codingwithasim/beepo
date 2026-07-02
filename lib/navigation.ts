@@ -1,3 +1,4 @@
+import { Tool } from "@/components/stores/ui-store";
 import {
   AlarmClock,
   Clock3,
@@ -7,7 +8,6 @@ import {
   TimerReset,
 } from "lucide-react";
 
-import type { Tool } from "@/stores/ui-store";
 
 export const navigation: {
   title: string;
