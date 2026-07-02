@@ -7,6 +7,13 @@ export type Tool =
   | "world-clock"
   | "alarms";
 
+
+type Lap = {
+  id: number;
+  split: number;
+  total: number;
+};
+
 type UIState = {
   activeTool: Tool;
   setActiveTool: (tool: Tool) => void;
@@ -20,6 +27,19 @@ type UIState = {
   };
 
   setTimerActions: (actions: UIState["timerActions"]) => void;
+
+  stopwatchLaps: Lap[];
+
+  stopwatchActions?: {
+    lap?: () => void;
+    clearLaps?: () => void;
+  };
+
+  setStopwatchLaps: (laps: Lap[]) => void;
+
+  setStopwatchActions: (
+    actions: UIState["stopwatchActions"]
+  ) => void;
 };
 
 export const useUIStore = create<UIState>((set) => ({
@@ -30,5 +50,13 @@ export const useUIStore = create<UIState>((set) => ({
 
   setTimerActions: (actions) =>
     set({ timerActions: actions }),
+  stopwatchLaps: [],
+  stopwatchActions: undefined,
+
+  setStopwatchLaps: (laps) =>
+    set({ stopwatchLaps: laps }),
+
+  setStopwatchActions: (actions) =>
+    set({ stopwatchActions: actions }),
 }));
 

@@ -21,6 +21,7 @@ export function StopwatchTool() {
             start={sw.start}
             pause={sw.pause}
             reset={sw.reset}
+            lap={sw.lap}
           />
         </CardContent>
       </Card>

@@ -8,6 +8,7 @@ type Props = {
   start: () => void;
   pause: () => void;
   reset: () => void;
+  lap: () => void;
 };
 
 export function StopwatchControls({
@@ -15,6 +16,7 @@ export function StopwatchControls({
   start,
   pause,
   reset,
+  lap
 }: Props) {
   return (
     <div className="flex gap-4">
@@ -33,6 +35,14 @@ export function StopwatchControls({
       <Button variant="outline" onClick={reset}>
         <RotateCcw className="mr-2 h-4 w-4" />
         Reset
+      </Button>
+
+      <Button
+        variant="secondary"
+        onClick={lap}
+        disabled={status !== "running"}
+      >
+        Lap
       </Button>
     </div>
   );

@@ -1,8 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useUIStore } from "@/components/stores/ui-store";
 
 type Status = "idle" | "running" | "paused";
+
+type Lap = {
+  id: number;
+  split: number;
+  total: number;
+};
 
 export function useStopwatch() {
   const [elapsed, setElapsed] = useState(0);
@@ -11,6 +18,34 @@ export function useStopwatch() {
   const startTimeRef = useRef<number | null>(null);
   const pausedAtRef = useRef<number>(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const [laps, setLaps] = useState<Lap[]>([]);
+  const lastLapRef = useRef(0);
+
+  const setStopwatchLaps = useUIStore(
+    (s) => s.setStopwatchLaps
+  );
+
+  const setStopwatchActions = useUIStore(
+    (s) => s.setStopwatchActions
+  );
+
+  function lap() {
+  if (status !== "running") return;
+
+  const split = elapsed - lastLapRef.current;
+
+  lastLapRef.current = elapsed;
+
+  setLaps((prev) => [
+    {
+      id: prev.length + 1,
+      split,
+      total: elapsed,
+    },
+    ...prev,
+  ]);
+}
 
   function start() {
     if (status === "running") return;
@@ -43,7 +78,28 @@ export function useStopwatch() {
     setStatus("idle");
     startTimeRef.current = null;
     pausedAtRef.current = 0;
+
+    lastLapRef.current = 0;
+    setLaps([]);
   }
+
+  function clearLaps() {
+    lastLapRef.current = elapsed;
+    setLaps([]);
+  }
+
+  useEffect(() => {
+    setStopwatchLaps(laps);
+  }, [laps, setStopwatchLaps]);
+
+  useEffect(() => {
+    setStopwatchActions({
+      lap,
+      clearLaps,
+    });
+
+    return () => setStopwatchActions(undefined);
+  }, []);
 
   return {
     elapsed,
@@ -51,5 +107,8 @@ export function useStopwatch() {
     start,
     pause,
     reset,
+    lap,
+    clearLaps,
+    laps
   };
 }
