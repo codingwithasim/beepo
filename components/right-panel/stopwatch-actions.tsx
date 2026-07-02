@@ -41,7 +41,7 @@ export function StopwatchActions() {
         Laps
       </p>
 
-      <div className="grid grid-cols-3 px-3 pt-4 text-xs text-muted-foreground">
+      <div className="grid grid-cols-3 px-3 pt-4 font-medium text-xs text-muted-foreground">
         <span>Lap</span>
         <span className="text-center">Lap Time</span>
         <span className="text-right">Total</span>

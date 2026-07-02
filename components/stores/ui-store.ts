@@ -7,6 +7,7 @@ export type Tool =
   | "world-clock"
   | "alarms";
 
+type PomodoroMode = "focus" | "shortBreak" | "longBreak";
 
 type Lap = {
   id: number;
@@ -40,6 +41,26 @@ type UIState = {
   setStopwatchActions: (
     actions: UIState["stopwatchActions"]
   ) => void;
+
+  pomodoroState?: {
+    mode: PomodoroMode;
+    timeLeft: number;
+    isRunning: boolean;
+    cycle: number;
+  };
+
+  pomodoroActions?: {
+    setMode?: (mode: PomodoroMode) => void;
+    start?: () => void;
+    pause?: () => void;
+    reset?: () => void;
+  };
+
+  setPomodoroState: (state: UIState["pomodoroState"]) => void;
+
+  setPomodoroActions: (
+    actions: UIState["pomodoroActions"]
+  ) => void;
 };
 
 export const useUIStore = create<UIState>((set) => ({
@@ -58,5 +79,21 @@ export const useUIStore = create<UIState>((set) => ({
 
   setStopwatchActions: (actions) =>
     set({ stopwatchActions: actions }),
+
+  pomodoroState: {
+    mode: "focus",
+    timeLeft: 25 * 60,
+    isRunning: false,
+    cycle: 1,
+  },
+
+  pomodoroActions: undefined,
+
+  setPomodoroState: (state) =>
+    set({ pomodoroState: state }),
+
+  setPomodoroActions: (actions) =>
+    set({ pomodoroActions: actions }),
 }));
 
+  

@@ -1,6 +1,6 @@
 type Props = {
   remaining: number;
-  phase: "work" | "break";
+  phase: "focus" | "shortBreak" | "longBreak";
   session: number;
 };
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-
 import { usePomodoro } from "./use-pomodoro";
 import { PomodoroDisplay } from "./pomodoro-display";
 import { PomodoroControls } from "./pomodoro-controls";
@@ -11,20 +10,20 @@ export function PomodoroTool() {
 
   return (
     <div className="flex h-full items-center justify-center">
-      <Card className="w-full ring-0 shadow-none max-w-4xl rounded-3xl">
+      <Card className="w-full max-w-4xl ring-0 rounded-3xl shadow-none">
         <CardContent className="flex flex-col items-center gap-10 py-16">
-
           <PomodoroDisplay
-            remaining={p.remaining}
-            phase={p.phase}
-            session={p.session}
+            remaining={p.timeLeft}
+            phase={p.mode}
+            session={p.cycle}
           />
 
           <PomodoroControls
-            status={p.status}
+            isRunning={p.isRunning}
             start={p.start}
             pause={p.pause}
             reset={p.reset}
+            setMode={p.setMode}
           />
         </CardContent>
       </Card>
