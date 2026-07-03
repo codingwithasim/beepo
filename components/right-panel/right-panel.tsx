@@ -8,6 +8,8 @@
   export function RightPanel() {
     const activeTool = useUIStore((s) => s.activeTool);
 
+    if(activeTool === "world-clock") return
+
     return (
       <aside className="flex h-full w-96 flex-col border-l bg-background p-4">
         <h2 className="mb-4 text-sm font-medium text-muted-foreground">

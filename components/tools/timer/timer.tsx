@@ -28,7 +28,7 @@ export function TimerTool() {
 
   return (
     <div className="flex h-full items-center justify-center">
-      <Card className="w-full ring-0 shadow-none max-w-4xl rounded-3xl">
+      <Card className="w-full ring-0 shadow-none bg-background max-w-4xl rounded-3xl">
         <CardContent className="flex flex-col items-center gap-10 py-16">
           
           <TimerDisplay remaining={timer.remaining} />

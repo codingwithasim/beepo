@@ -10,7 +10,7 @@ export function PomodoroTool() {
 
   return (
     <div className="flex h-full items-center justify-center">
-      <Card className="w-full max-w-4xl ring-0 rounded-3xl shadow-none">
+      <Card className="w-full max-w-4xl bg-background ring-0 rounded-3xl shadow-none">
         <CardContent className="flex flex-col items-center gap-10 py-16">
           <PomodoroDisplay
             remaining={p.timeLeft}

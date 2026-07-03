@@ -2,6 +2,7 @@
 
 import { TopBar } from "./header/top-bar";
 import { AppSidebar } from "./sidebar/app-sidebar";
+import { TimezoneCard } from "./timezone-card";
 import { Workspace } from "./workspace/workspace";
 import { RightPanel } from "@/components/right-panel/right-panel";
 
@@ -15,6 +16,14 @@ export function AppShell() {
       {/* Main Area */}
       <main className="flex flex-1 flex-col overflow-hidden">
         <TopBar />
+
+        {/* <TimezoneCard
+          city="Tokyo"
+          country="Japan"
+          time="14:32"
+          date="Thursday, 2 July"
+          offset="UTC +9"
+        /> */}
 
         <Workspace />
       </main>

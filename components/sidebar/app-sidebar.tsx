@@ -29,16 +29,18 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="border-b">
-        <div className="flex items-center gap-3 px-2 py-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+        <div className="flex items-center gap-3 p-2 group-data-[collapsible=icon]:justify-center">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm transition-all">
             <Clock4 className="h-5 w-5" />
           </div>
 
-          <div className="flex flex-col group-data-[collapsible=icon]:hidden">
-            <span className="font-semibold">Beepo</span>
-            <span className="text-xs text-muted-foreground">
+          <div className="min-w-0 transition-opacity duration-200 group-data-[collapsible=icon]:hidden">
+            <h2 className="truncate text-sm font-semibold tracking-tight">
+              Beepo
+            </h2>
+            <p className="truncate text-xs text-muted-foreground">
               Time made fun
-            </span>
+            </p>
           </div>
         </div>
       </SidebarHeader>
@@ -72,7 +74,7 @@ export function AppSidebar() {
               //   isActive={activeTool === item.tool}
               //   tooltip={item.title}
               //   onClick={() => setActiveTool(item.tool)}
-               >
+              >
                 <item.icon className="size-4" />
                 <span>{item.title}</span>
               </SidebarMenuButton>
