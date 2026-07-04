@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-      <TimeFyiLanding/>
+      <div className="w-screen">
+        <TimeFyiLanding/>
+      </div>
   );
 }

@@ -1,118 +1,141 @@
-'use client';
+"use client";
 
-import React from 'react';
+import Link from "next/link";
+
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+
+import {
+  Globe,
+  Timer,
+  Clock,
+  AlarmClock,
+  Activity,
+  CalendarDays,
+  LucideAlarmClock,
+  LucideClockPlus,
+} from "lucide-react";
 
 export default function TimeFyiLanding() {
   const tools = [
     {
       title: "Timezones",
       description: "Convert time across different zones",
-      icon: "🌍",
-      color: "from-blue-500 to-cyan-500"
+      icon: Globe,
+      href: "/world-clock",
     },
     {
       title: "Pomodoro",
-      description: "Boost productivity with timed work sessions",
-      icon: "⏳",
-      color: "from-orange-500 to-red-500"
+      description: "Focused work sessions with breaks",
+      icon: Activity,
+      href: "/pomodoro",
     },
     {
       title: "World Clock",
-      description: "Check current time anywhere in the world",
-      icon: "🕒",
-      color: "from-purple-500 to-violet-500"
+      description: "Track time across the world",
+      icon: Clock,
+      href: "/world-clock",
     },
     {
       title: "Timer",
-      description: "Set countdowns with alarm for any task",
-      icon: "⏰",
-      color: "from-amber-500 to-yellow-500"
+      description: "Countdown with optional alarm",
+      icon: AlarmClock,
+      href: "/timer",
     },
     {
       title: "Stopwatch",
       description: "Measure elapsed time precisely",
-      icon: "⚡",
-      color: "from-emerald-500 to-teal-500"
+      icon: Timer,
+      href: "/stopwatch",
     },
     {
-      title: "Daily Planner",
-      description: "Plan your days and weeks to stay organized",
-      icon: "📅",
-      color: "from-rose-500 to-pink-500"
+      title: "Planner",
+      description: "Organize your day simply",
+      icon: CalendarDays,
+      href: "#",
     },
   ];
 
   return (
-    <div className="w-full bg-zinc-950 text-white">
-      {/* Navigation */}
-      <nav className="border-b border-zinc-800">
-        <div className="max-w-6xl mx-auto px-6 py-6 flex justify-between items-center">
-          <h1 className="text-3xl font-light">time.fyi</h1>
-          <a href="#start" 
-             className="px-6 py-3 bg-white text-black rounded-full font-medium hover:bg-zinc-200 transition">
-            Start App
-          </a>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-background text-foreground">
+      {/* NAV */}
+      <header className="border-b">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+            <h1 className="text-lg font-semibold items-center tracking-tight flex gap-2">
+                <LucideClockPlus size={18}/>
+                Beepo
+            </h1>
 
-      {/* Hero */}
-      <div className="max-w-4xl mx-auto text-center pt-24 pb-20 px-6">
-        <h2 className="text-6xl md:text-7xl font-light tracking-tighter mb-6">
-          All Your Time Tools<br />in One Place
+        </div>
+      </header>
+
+      {/* HERO */}
+      <section className="mx-auto max-w-3xl px-6 py-24 text-center">
+        <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+          All your time tools in one place
         </h2>
-        <p className="text-2xl text-zinc-400 mb-10">
-          Time related tools to help you stay productive and organized
+
+        <p className="mt-4 text-muted-foreground">
+          Minimal tools for focus, productivity, and time awareness.
         </p>
-        
-        <div className="flex justify-center gap-4">
-          <a href="#tools" 
-             className="px-8 py-4 bg-white text-black rounded-2xl text-lg font-medium hover:scale-105 transition">
-            Explore Tools
-          </a>
-          <a href="#" 
-             className="px-8 py-4 border border-zinc-700 rounded-2xl text-lg font-medium hover:bg-zinc-900 transition">
-            No sign-up required
-          </a>
-        </div>
-      </div>
 
-      {/* Tools Grid */}
-      <div id="tools" className="max-w-6xl mx-auto px-6 pb-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tools.map((tool, index) => (
-            <div
-              key={index}
-              className="group bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-3xl p-8 transition-all hover:-translate-y-1"
-            >
-              <div className={`inline-block text-5xl mb-6 p-4 rounded-2xl bg-gradient-to-br ${tool.color} bg-opacity-10`}>
-                {tool.icon}
-              </div>
-              
-              <h3 className="text-3xl font-light mb-3">{tool.title}</h3>
-              <p className="text-zinc-400 text-lg leading-relaxed">
-                {tool.description}
-              </p>
-
-              <div className="mt-8 text-sm text-zinc-500 group-hover:text-zinc-400 transition">
-                → Open tool
-              </div>
-            </div>
-          ))}
+        <div className="mt-8 flex justify-center gap-3">
+          <Button render={
+            <Link href="/timer">Open app</Link>
+          }>
+          </Button>
+          
         </div>
-      </div>
+      </section>
 
-      {/* Footer / CTA */}
-      <div className="border-t border-zinc-800 py-16">
-        <div className="max-w-4xl mx-auto text-center px-6">
-          <p className="text-zinc-400 text-xl mb-6">
-            Keep using the app for free.<br />
-            Upgrade anytime to support development.
-          </p>
-          <button className="px-10 py-4 bg-white text-black rounded-2xl text-lg font-medium">
-            Get Started — It's Free
-          </button>
+      <Separator />
+
+      {/* TOOLS */}
+      <section id="tools" className="mx-auto max-w-6xl px-6 py-16">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {tools.map((tool) => {
+            const Icon = tool.icon;
+
+            return (
+              <Link key={tool.title} href={tool.href}>
+                <Card className="h-full cursor-pointer transition hover:shadow-md hover:-translate-y-0.5">
+                  <CardHeader className="flex flex-row items-center gap-3 space-y-0">
+                    <div className="rounded-md border p-2">
+                      <Icon className="h-4 w-4" />
+                    </div>
+
+                    <CardTitle className="text-base">
+                      {tool.title}
+                    </CardTitle>
+                  </CardHeader>
+
+                  <CardContent>
+                    <CardDescription>
+                      {tool.description}
+                    </CardDescription>
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
         </div>
-      </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="border-t">
+        <div className="mx-auto text-center max-w-6xl px-6 py-10 text-sm text-muted-foreground">
+          &copy; {new Date().getFullYear()} {" - "}
+          All Rights Reserved.
+        </div>
+      </footer>
     </div>
   );
 }
