@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useUIStore } from "@/components/stores/ui-store";
+import { playAlarm } from "@/lib/play-alarm";
 
 type Mode = "focus" | "shortBreak" | "longBreak";
 
@@ -25,19 +26,19 @@ export function usePomodoro() {
   );
 
   useEffect(() => {
-  setPomodoroState({
+    setPomodoroState({
+      mode,
+      timeLeft,
+      isRunning,
+      cycle,
+    });
+  }, [
     mode,
     timeLeft,
     isRunning,
     cycle,
-  });
-}, [
-  mode,
-  timeLeft,
-  isRunning,
-  cycle,
-  setPomodoroState,
-]);
+    setPomodoroState,
+  ]);
 
   function getDuration(m: Mode) {
     return CONFIG[m];
@@ -62,12 +63,12 @@ export function usePomodoro() {
   }
 
   useEffect(() => {
-  if (!isRunning) return;
+    if (!isRunning) return;
 
-  if (timeLeft > 0) return;
+    if (timeLeft > 0) return;
 
-  next();
-}, [timeLeft]);
+    next();
+  }, [timeLeft]);
 
   function pause() {
     setIsRunning(false);
@@ -88,23 +89,23 @@ export function usePomodoro() {
   }
 
   function next() {
-  if (mode !== "focus") {
-    setMode("focus");
-    setTimeLeft(CONFIG.focus);
-    return;
+    if (mode !== "focus") {
+      setMode("focus");
+      setTimeLeft(CONFIG.focus);
+      return;
+    }
+
+    const isLong =
+      cycle % CONFIG.cyclesBeforeLongBreak === 0;
+
+    const nextMode = isLong ? "longBreak" : "shortBreak";
+
+    setMode(nextMode);
+    setTimeLeft(CONFIG[nextMode]);
+
+    // Always increment after a focus session
+    setCycle((c) => c + 1);
   }
-
-  const isLong =
-    cycle % CONFIG.cyclesBeforeLongBreak === 0;
-
-  const nextMode = isLong ? "longBreak" : "shortBreak";
-
-  setMode(nextMode);
-  setTimeLeft(CONFIG[nextMode]);
-
-  // Always increment after a focus session
-  setCycle((c) => c + 1);
-}
 
   useEffect(() => {
     return () => clear();

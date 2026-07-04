@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { playAlarm } from "@/lib/play-alarm";
 
 export type TimerStatus = "idle" | "running" | "paused" | "finished";
 
@@ -31,6 +32,7 @@ export function useTimer(initialSeconds: number) {
         setStatus("finished");
         endTimeRef.current = null;
         clearInterval(interval);
+        playAlarm()
       }
     }, 250);
 

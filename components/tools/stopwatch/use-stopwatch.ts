@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useUIStore } from "@/components/stores/ui-store";
+import { playAlarm } from "@/lib/play-alarm";
 
 type Status = "idle" | "running" | "paused";
 
@@ -31,21 +32,21 @@ export function useStopwatch() {
   );
 
   function lap() {
-  if (status !== "running") return;
+    if (status !== "running") return;
 
-  const split = elapsed - lastLapRef.current;
+    const split = elapsed - lastLapRef.current;
 
-  lastLapRef.current = elapsed;
+    lastLapRef.current = elapsed;
 
-  setLaps((prev) => [
-    {
-      id: prev.length + 1,
-      split,
-      total: elapsed,
-    },
-    ...prev,
-  ]);
-}
+    setLaps((prev) => [
+      {
+        id: prev.length + 1,
+        split,
+        total: elapsed,
+      },
+      ...prev,
+    ]);
+  }
 
   function start() {
     if (status === "running") return;
