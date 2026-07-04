@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useUIStore } from "../stores/ui-store";
 
 import {
   Sidebar,
@@ -17,24 +16,23 @@ import {
 } from "@/components/ui/sidebar";
 
 import { bottomNavigation, navigation } from "@/lib/navigation";
-
 import { Clock4 } from "lucide-react";
 
 export function AppSidebar() {
   const pathname = usePathname();
 
-  const activeTool = useUIStore((s) => s.activeTool);
-  const setActiveTool = useUIStore((s) => s.setActiveTool);
-
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="border-b">
-        <div className="flex items-center gap-3 p-2 group-data-[collapsible=icon]:justify-center">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm transition-all">
-            <Clock4 className="h-5 w-5" />
+        <Link
+          href="/"
+          className="flex items-center gap-3 p-2 transition-opacity hover:opacity-90 group-data-[collapsible=icon]:justify-center"
+        >
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+            <Clock4 className="size-5" />
           </div>
 
-          <div className="min-w-0 transition-opacity duration-200 group-data-[collapsible=icon]:hidden">
+          <div className="min-w-0 group-data-[collapsible=icon]:hidden">
             <h2 className="truncate text-sm font-semibold tracking-tight">
               Beepo
             </h2>
@@ -42,7 +40,7 @@ export function AppSidebar() {
               Time made fun
             </p>
           </div>
-        </div>
+        </Link>
       </SidebarHeader>
 
       <SidebarContent>
@@ -52,12 +50,16 @@ export function AppSidebar() {
               {navigation.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
-                    isActive={activeTool === item.tool}
                     tooltip={item.title}
-                    onClick={() => setActiveTool(item.tool)}
+                    isActive={pathname === item.href}
+                    render={
+                      <Link href={item.href}>
+                        <item.icon className="size-4" />
+                        <span>{item.title}</span>
+                      </Link>
+                    }
                   >
-                    <item.icon className="size-4" />
-                    <span>{item.title}</span>
+                    
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -71,12 +73,14 @@ export function AppSidebar() {
           {bottomNavigation.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
-              //   isActive={activeTool === item.tool}
-              //   tooltip={item.title}
-              //   onClick={() => setActiveTool(item.tool)}
-              >
-                <item.icon className="size-4" />
-                <span>{item.title}</span>
+                tooltip={item.title}
+                isActive={pathname === item.href}
+                render={
+                  <Link href={item.href}>
+                    <item.icon className="size-4" />
+                    <span>{item.title}</span>
+                  </Link>
+                }>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

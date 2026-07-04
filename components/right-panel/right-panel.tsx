@@ -1,30 +1,26 @@
-  "use client";
+"use client";
 
-  import { useUIStore } from "../stores/ui-store";
-  import { StopwatchActions } from "./stopwatch-actions";
-  import { TimerPresets } from "./timer-presets";
-  import { PomodoroControls } from "./pomodoro-controls";
+import { usePathname } from "next/navigation";
 
-  export function RightPanel() {
-    const activeTool = useUIStore((s) => s.activeTool);
+import { StopwatchActions } from "./stopwatch-actions";
+import { TimerPresets } from "./timer-presets";
+import { PomodoroControls } from "./pomodoro-controls";
 
-    if(activeTool === "world-clock") return
+export function RightPanel() {
+  const pathname = usePathname();
 
-    return (
-      <aside className="flex h-full w-96 flex-col border-l bg-background p-4">
-        <h2 className="mb-4 text-sm font-medium text-muted-foreground">
-          Controls
-        </h2>
+  if (pathname === "/world-clock") return null;
+  if (pathname === "/alarms") return null;
 
-        {activeTool === "timer" && <TimerPresets />}
-        {activeTool === "stopwatch" && <StopwatchActions />}
-        {activeTool === "pomodoro" && <PomodoroControls />}
+  return (
+    <aside className="flex h-full w-96 shrink-0 flex-col border-l bg-background p-4">
+      <h2 className="mb-4 text-sm font-medium text-muted-foreground">
+        Controls
+      </h2>
 
-        {activeTool === "pomodoro" && (
-          <p className="text-sm text-muted-foreground">
-            Pomodoro controls coming soon
-          </p>
-        )}
-      </aside>
-    );
-  }
+      {pathname === "/timer" && <TimerPresets />}
+      {pathname === "/stopwatch" && <StopwatchActions />}
+      {pathname === "/pomodoro" && <PomodoroControls />}
+    </aside>
+  );
+}

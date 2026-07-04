@@ -16,9 +16,6 @@ type Lap = {
 };
 
 type UIState = {
-  activeTool: Tool;
-  setActiveTool: (tool: Tool) => void;
-
   // 👇 NEW: timer control bridge
   timerActions?: {
     setDuration?: (seconds: number) => void;
@@ -64,9 +61,6 @@ type UIState = {
 };
 
 export const useUIStore = create<UIState>((set) => ({
-  activeTool: "timer",
-  setActiveTool: (tool) => set({ activeTool: tool }),
-
   timerActions: undefined,
 
   setTimerActions: (actions) =>

@@ -9,35 +9,31 @@ import {
 } from "lucide-react";
 
 
-export const navigation: {
-  title: string;
-  icon: any;
-  tool: Tool;
-}[] = [
+export const navigation = [
   {
     title: "Timer",
     icon: Timer,
-    tool: "timer",
+    href: "/timer",
   },
   {
     title: "Stopwatch",
     icon: TimerReset,
-    tool: "stopwatch",
+    href: "/stopwatch",
   },
   {
     title: "Pomodoro",
     icon: Clock3,
-    tool: "pomodoro",
+    href: "/pomodoro",
   },
   {
     title: "World Clock",
     icon: Globe2,
-    tool: "world-clock",
+    href: "/world-clock",
   },
   {
     title: "Alarms",
     icon: AlarmClock,
-    tool: "alarms",
+    href: "/alarms",
   },
 ];
 
