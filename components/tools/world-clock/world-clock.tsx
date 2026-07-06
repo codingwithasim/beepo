@@ -1,17 +1,32 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { useWorldClock } from "./use-world-clock";
 import { CityDialog } from "./add-city-dialog";
 import { TimezoneCard } from "./timezone-card";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { LucidePlus } from "lucide-react";
+import { LoaderIcon, LucidePlus } from "lucide-react";
+import { useWorldClockStore } from "@/stores/world-clock-store";
 
 export function WorldClockTool() {
-  const clock = useWorldClock();
+  const clock = useWorldClockStore();
 
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const isEditMode = !!clock.editingTimezone;
+  const isAddMode = isAddOpen && !isEditMode;
+  const open = isEditMode || isAddMode;
+
+  if (!clock.hasHydrated) {
+    return (
+      <div className="w-full h-full flex justify-center items-center gap-2">
+        <LoaderIcon
+          role="status"
+          aria-label= "Loading"
+          className="size-4 animate-spin"/>
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-full items-center justify-center">
@@ -28,6 +43,7 @@ export function WorldClockTool() {
                 time={clock.getTime(city.timezone)}
                 date={clock.getDate(city.timezone)}
                 gmt={clock.getGMT(city.timezone)}
+                timezone={city.timezone}
                 offset={clock.getTimeDifference(city.timezone)}
                 onDelete={() => clock.removeCity(city.timezone)}
                 onEdit={() => clock.openEditCity(city.timezone)}
@@ -39,7 +55,7 @@ export function WorldClockTool() {
           <CityDialog
             searchCities={clock.searchCities}
             initialTimezone={clock.editingTimezone}
-            open={!!clock.editingTimezone || isAddOpen}
+            open={open}
             onOpenChange={(isOpen) => {
               if (!isOpen) {
                 clock.closeEditCity();
@@ -47,8 +63,8 @@ export function WorldClockTool() {
               }
             }}
             onSelect={(city) => {
-              if (clock.editingTimezone) {
-                clock.updateCity(clock.editingTimezone, city);
+              if (isEditMode) {
+                clock.updateCity(clock.editingTimezone!, city);
                 clock.closeEditCity();
               } else {
                 clock.addCity(city);
@@ -60,10 +76,13 @@ export function WorldClockTool() {
       </Card>
 
       <Button
-        onClick={() => setIsAddOpen(true)}
+        onClick={() => {
+          clock.closeEditCity(); // important: reset edit mode
+          setIsAddOpen(true);
+        }}
         className="fixed bottom-6 right-6 size-14 rounded-2xl shadow-lg"
       >
-        <LucidePlus/>
+        <LucidePlus />
       </Button>
     </div>
   );

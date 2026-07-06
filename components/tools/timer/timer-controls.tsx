@@ -1,7 +1,7 @@
 "use client";
 
-import { useUIStore } from "@/components/stores/ui-store";
 import { Button } from "@/components/ui/button";
+import { useTimerStore } from "@/stores/timer-store";
 import { Pause, Play, RotateCcw } from "lucide-react";
 
 type TimerControlsProps = {
@@ -20,7 +20,7 @@ export function TimerControls({
   reset,
 }: TimerControlsProps) {
 
-  const timerActions = useUIStore((s) => s.timerActions);
+  const actions = useTimerStore(s => s.actions)
 
   return (
     <div className="flex flex-col gap-4">
@@ -33,7 +33,7 @@ export function TimerControls({
                 key={stamp}
                 variant={"ghost"}
                 className="cursor-pointer text-black/40 hover:bg-background"
-                onClick={()=> timerActions?.addTime?.(stamp * 60)}
+                onClick={()=> actions?.addTime?.(stamp * 60)}
               >
                 +{stamp} min
               </Button>

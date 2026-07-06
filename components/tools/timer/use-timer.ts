@@ -94,27 +94,27 @@ export function useTimer(initialSeconds: number) {
   // ---------------------------
   // KEYBOARD SHORTCUTS
   // ---------------------------
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.code === "Space") {
-        e.preventDefault();
+  // useEffect(() => {
+  //   function handleKeyDown(e: KeyboardEvent) {
+  //     if (e.code === "Space") {
+  //       e.preventDefault();
 
-        if (status === "running") {
-          pause();
-        } else {
-          start();
-        }
-      }
+  //       if (status === "running") {
+  //         pause();
+  //       } else {
+  //         start();
+  //       }
+  //     }
 
-      if (e.key.toLowerCase() === "r") {
-        reset();
-      }
-    }
+  //     if (e.key.toLowerCase() === "r") {
+  //       reset();
+  //     }
+  //   }
 
-    window.addEventListener("keydown", handleKeyDown);
+  //   window.addEventListener("keydown", handleKeyDown);
 
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [status, remaining]);
+  //   return () => window.removeEventListener("keydown", handleKeyDown);
+  // }, [status, remaining]);
 
   return {
     duration,

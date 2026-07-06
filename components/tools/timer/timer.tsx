@@ -8,23 +8,23 @@ import { TimerProgress } from "./timer-progress";
 import { useEffect } from "react";
 
 import { useTimer } from "./use-timer";
-import { useUIStore } from "@/components/stores/ui-store";
+import { useTimerStore } from "@/stores/timer-store";
 
 export function TimerTool() {
   // const timer = useTimer(25 * 60);
   const timer = useTimer(5);
 
-  const setTimerActions = useUIStore((s) => s.setTimerActions);
+  const setActions = useTimerStore((s) => s.setActions)
 
     useEffect(() => {
-      setTimerActions({
+      setActions({
         setDuration: timer.changeDuration,
-        addTime: timer.addTime, // 👈 NEW
+        addTime: timer.addTime,
         start: timer.start,
         reset: timer.reset,
       });
 
-      return () => setTimerActions(undefined);
+      return () => setActions(undefined);
     }, [timer]);
 
   return (
