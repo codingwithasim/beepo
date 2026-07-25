@@ -1,18 +1,24 @@
 "use client";
 
 import {
-  AlarmClock,
-  Plus,
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  LucideAlarmClock,
+  LucidePlus,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
-
-import { Skeleton } from "@/components/ui/skeleton";
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 
 import { useAlarmStore } from "@/stores/alarms-store";
 
@@ -25,78 +31,71 @@ type Props = {
 export function AlarmList({
   onCreate,
 }: Props) {
-  const alarms =
-    useAlarmStore(
-      (state) => state.alarms
-    );
+  const alarms = useAlarmStore(
+    (state) => state.alarms
+  );
 
-  const hasHydrated =
-    useAlarmStore(
-      (state) =>
-        state.hasHydrated
-    );
+  const removeAlarm = useAlarmStore(
+    (state) => state.removeAlarm
+  );
 
-  const removeAlarm =
-    useAlarmStore(
-      (state) =>
-        state.removeAlarm
-    );
+  const toggleAlarm = useAlarmStore(
+    (state) => state.toggleAlarm
+  );
 
-  const toggleAlarm =
-    useAlarmStore(
-      (state) =>
-        state.toggleAlarm
-    );
+  const openEditAlarm = useAlarmStore(
+    (state) => state.openEditAlarm
+  );
 
-  const openEditAlarm =
-    useAlarmStore(
-      (state) =>
-        state.openEditAlarm
-    );
+  const [now, setNow] =
+    useState<Date | null>(null);
 
-  if (!hasHydrated) {
-    return (
-      <div className="space-y-3">
-        {Array.from({
-          length: 3,
-        }).map((_, index) => (
-          <Skeleton
-            key={index}
-            className="h-28 rounded-2xl"
-          />
-        ))}
-      </div>
-    );
-  }
+  useEffect(() => {
+    setNow(new Date());
+
+    const intervalId =
+      window.setInterval(() => {
+        setNow(new Date());
+      }, 30_000);
+
+    return () => {
+      window.clearInterval(
+        intervalId
+      );
+    };
+  }, []);
 
   if (!alarms.length) {
     return (
-      <Card className="border-dashed bg-muted/20">
-        <CardContent className="flex min-h-72 flex-col items-center justify-center px-6 py-12 text-center">
-          <div className="mb-5 flex size-14 items-center justify-center rounded-2xl bg-muted">
-            <AlarmClock className="size-7 text-muted-foreground" />
-          </div>
+      <div className="py-12">
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <LucideAlarmClock className="size-5" />
+            </EmptyMedia>
+          </EmptyHeader>
 
-          <h2 className="text-lg font-semibold">
+          <EmptyTitle>
             No alarms yet
-          </h2>
+          </EmptyTitle>
 
-          <p className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">
+          <EmptyDescription>
             Create an alarm for
             reminders, meetings, or
             anything you do not want
             to miss.
-          </p>
+          </EmptyDescription>
 
           <Button
-            className="mt-6"
+            size="sm"
+            className="mt-4"
             onClick={onCreate}
           >
-            <Plus />
-            Create alarm
+            <LucidePlus />
+            Add Alarm
           </Button>
-        </CardContent>
-      </Card>
+        </Empty>
+      </div>
     );
   }
 
@@ -106,6 +105,7 @@ export function AlarmList({
         <AlarmCard
           key={alarm.id}
           alarm={alarm}
+          now={now}
           onDelete={() =>
             removeAlarm(alarm.id)
           }

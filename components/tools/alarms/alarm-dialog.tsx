@@ -9,7 +9,6 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -20,63 +19,42 @@ import { Input } from "@/components/ui/input";
 import { useAlarmStore } from "@/stores/alarms-store";
 
 import {
-  minutesToInputValue,
-  timeInputToMinutes,
+  inputTimeToMinutes,
+  minutesToInputTime,
 } from "./alarm-utils";
 
 type Props = {
   open: boolean;
-
-  onOpenChange: (
-    open: boolean
-  ) => void;
+  onOpenChange: (open: boolean) => void;
 };
 
 export function AlarmDialog({
   open,
   onOpenChange,
 }: Props) {
-  const editingAlarmId =
-    useAlarmStore(
-      (state) =>
-        state.editingAlarmId
-    );
+  const alarms = useAlarmStore((state) => state.alarms);
 
-  const editingAlarm =
-    useAlarmStore((state) => {
-      if (!state.editingAlarmId) {
-        return undefined;
-      }
+  const editingAlarmId = useAlarmStore(
+    (state) => state.editingAlarmId
+  );
 
-      return state.alarms.find(
-        (alarm) =>
-          alarm.id ===
-          state.editingAlarmId
-      );
-    });
+  const addAlarm = useAlarmStore((state) => state.addAlarm);
 
-  const addAlarm =
-    useAlarmStore(
-      (state) => state.addAlarm
-    );
+  const updateAlarm = useAlarmStore(
+    (state) => state.updateAlarm
+  );
 
-  const updateAlarm =
-    useAlarmStore(
-      (state) =>
-        state.updateAlarm
-    );
+  const closeEditAlarm = useAlarmStore(
+    (state) => state.closeEditAlarm
+  );
 
-  const [timeValue, setTimeValue] =
-    useState("07:30");
+  const editingAlarm = editingAlarmId
+    ? alarms.find((alarm) => alarm.id === editingAlarmId)
+    : undefined;
 
-  const [label, setLabel] =
-    useState("");
-
-  const [error, setError] =
-    useState<string | null>(null);
-
-  const isEditing =
-    editingAlarmId !== null;
+  const [timeValue, setTimeValue] = useState("07:30");
+  const [label, setLabel] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!open) {
@@ -86,195 +64,145 @@ export function AlarmDialog({
     setError(null);
 
     if (editingAlarm) {
-      setTimeValue(
-        minutesToInputValue(
-          editingAlarm.time
-        )
-      );
-
-      setLabel(
-        editingAlarm.label
-      );
-
-      return;
+      setTimeValue(minutesToInputTime(editingAlarm.time));
+      setLabel(editingAlarm.label);
+    } else {
+      setTimeValue("07:30");
+      setLabel("");
     }
-
-    setTimeValue("07:30");
-    setLabel("");
   }, [open, editingAlarm]);
 
-  function handleSubmit(
-    event: FormEvent<HTMLFormElement>
-  ) {
+  function handleOpenChange(value: boolean) {
+    if (!value) {
+      closeEditAlarm();
+      setError(null);
+    }
+
+    onOpenChange(value);
+  }
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    setError(null);
-
-    const time =
-      timeInputToMinutes(
-        timeValue
-      );
+    const time = inputTimeToMinutes(timeValue);
+    const normalizedLabel = label.trim();
 
     if (time === null) {
-      setError(
-        "Enter a valid alarm time."
-      );
-
+      setError("Enter a valid alarm time.");
       return;
     }
 
-    if (
-      isEditing &&
-      !editingAlarm
-    ) {
-      setError(
-        "This alarm no longer exists."
-      );
+    const duplicate = alarms.some(
+      (alarm) =>
+        alarm.id !== editingAlarm?.id &&
+        alarm.time === time &&
+        alarm.label.trim().toLowerCase() ===
+          normalizedLabel.toLowerCase()
+    );
 
+    if (duplicate) {
+      setError("An alarm with this time and label already exists.");
       return;
     }
 
-    const result = editingAlarm
-      ? updateAlarm(
-          editingAlarm.id,
-          {
-            time,
-            label,
-          }
-        )
-      : addAlarm({
-          time,
-          label,
-          enabled: true,
-        });
-
-    if (!result.success) {
-      if (
-        result.reason ===
-        "duplicate"
-      ) {
-        setError(
-          "An alarm with this time and label already exists."
-        );
-      } else if (
-        result.reason ===
-        "invalid-time"
-      ) {
-        setError(
-          "Enter a valid alarm time."
-        );
-      } else {
-        setError(
-          "The alarm could not be found."
-        );
-      }
-
-      return;
+    if (editingAlarm) {
+      updateAlarm(editingAlarm.id, {
+        time,
+        label: normalizedLabel,
+      });
+    } else {
+      addAlarm({
+        time,
+        label: normalizedLabel,
+        enabled: true,
+      });
     }
 
-    onOpenChange(false);
+    handleOpenChange(false);
   }
 
   return (
     <Dialog
       open={open}
-      onOpenChange={
-        onOpenChange
-      }
+      onOpenChange={handleOpenChange}
     >
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>
-            {isEditing
-              ? "Edit alarm"
-              : "Create alarm"}
-          </DialogTitle>
+      <DialogContent className="max-w-md overflow-hidden p-0">
+        {/* Header */}
+        <div className="border-b px-5 py-4">
+          <DialogHeader>
+            <DialogTitle className="text-base">
+              {editingAlarm ? "Edit Alarm" : "Add Alarm"}
+            </DialogTitle>
+          </DialogHeader>
+        </div>
 
-          <DialogDescription>
-            {isEditing
-              ? "Update the alarm time or label."
-              : "Choose when the alarm should ring."}
-          </DialogDescription>
-        </DialogHeader>
+        <form onSubmit={handleSubmit}>
+          {/* Fields */}
+          <div className="space-y-4 px-5 py-5">
+            <div className="space-y-2">
+              <label
+                htmlFor="alarm-time"
+                className="text-sm font-medium"
+              >
+                Time
+              </label>
 
-        <form
-          className="space-y-5"
-          onSubmit={handleSubmit}
-        >
-          <div className="space-y-2">
-            <label
-              htmlFor="alarm-time"
-              className="text-sm font-medium"
-            >
-              Time
-            </label>
+              <Input
+                id="alarm-time"
+                type="time"
+                step={60}
+                autoFocus
+                required
+                value={timeValue}
+                onChange={(event) =>
+                  setTimeValue(event.target.value)
+                }
+                className="h-10 font-mono"
+              />
+            </div>
 
-            <Input
-              id="alarm-time"
-              type="time"
-              step={60}
-              value={timeValue}
-              onChange={(event) =>
-                setTimeValue(
-                  event.target.value
-                )
-              }
-              className="h-14 font-mono text-xl"
-              autoFocus
-              required
-            />
+            <div className="space-y-2">
+              <label
+                htmlFor="alarm-label"
+                className="text-sm font-medium"
+              >
+                Label
+              </label>
+
+              <Input
+                id="alarm-label"
+                value={label}
+                maxLength={40}
+                placeholder="Wake up, meeting, medicine..."
+                onChange={(event) =>
+                  setLabel(event.target.value)
+                }
+                className="h-10"
+              />
+            </div>
+
+            {error && (
+              <p
+                role="alert"
+                className="text-sm text-destructive"
+              >
+                {error}
+              </p>
+            )}
           </div>
 
-          <div className="space-y-2">
-            <label
-              htmlFor="alarm-label"
-              className="text-sm font-medium"
-            >
-              Label
-            </label>
-
-            <Input
-              id="alarm-label"
-              value={label}
-              onChange={(event) =>
-                setLabel(
-                  event.target.value
-                )
-              }
-              maxLength={40}
-              placeholder="Wake up, meeting, medicine..."
-            />
-
-            <p className="text-xs text-muted-foreground">
-              Optional · Maximum 40
-              characters
-            </p>
-          </div>
-
-          {error && (
-            <p
-              role="alert"
-              className="text-sm text-destructive"
-            >
-              {error}
-            </p>
-          )}
-
-          <div className="flex flex-col-reverse gap-2 pt-1 sm:flex-row sm:justify-end">
+          {/* Footer */}
+          <div className="flex items-center justify-end gap-2 border-t px-5 py-4">
             <Button
               type="button"
-              variant="outline"
-              onClick={() =>
-                onOpenChange(false)
-              }
+              variant="ghost"
+              onClick={() => handleOpenChange(false)}
             >
               Cancel
             </Button>
 
             <Button type="submit">
-              {isEditing
-                ? "Save changes"
-                : "Create alarm"}
+              {editingAlarm ? "Save Changes" : "Add Alarm"}
             </Button>
           </div>
         </form>

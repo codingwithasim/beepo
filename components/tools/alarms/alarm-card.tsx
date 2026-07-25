@@ -2,36 +2,26 @@
 
 import type { Alarm } from "@/stores/alarms-store";
 
-import {
-  MoreHorizontal,
-  Pencil,
-  Trash2,
-} from "lucide-react";
-
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-
 import {
   Card,
   CardContent,
 } from "@/components/ui/card";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
 import { Switch } from "@/components/ui/switch";
 
 import {
+  LucidePen,
+  LucideTrash,
+} from "lucide-react";
+
+import {
+  formatTimeUntilAlarm,
   minutesToTimeParts,
 } from "./alarm-utils";
 
 type Props = {
   alarm: Alarm;
+  now: Date | null;
 
   onEdit: () => void;
   onDelete: () => void;
@@ -40,122 +30,95 @@ type Props = {
 
 export function AlarmCard({
   alarm,
+  now,
   onEdit,
   onDelete,
   onToggle,
 }: Props) {
-  const { time, period } =
+  const displayTime =
     minutesToTimeParts(
       alarm.time
     );
 
-  const alarmName =
-    alarm.label || "Alarm";
+  const alarmLabel =
+    alarm.label.trim() ||
+    "Alarm";
+
+  const remainingTime =
+    alarm.enabled && now
+      ? formatTimeUntilAlarm(
+          alarm.time,
+          now
+        )
+      : "Disabled";
 
   return (
     <Card
       className={[
-        "overflow-hidden rounded-2xl transition-colors",
-        alarm.enabled
-          ? "bg-card"
-          : "bg-muted/30",
+        "relative w-full max-w-2xl overflow-hidden rounded-xl border bg-background text-foreground",
+        !alarm.enabled
+          ? "opacity-60"
+          : "",
       ].join(" ")}
     >
-      <CardContent className="p-4 sm:p-5">
-        <div className="flex items-center gap-4">
-          <div className="min-w-0 flex-1">
-            <div
-              className={[
-                "flex items-baseline gap-2",
-                alarm.enabled
-                  ? ""
-                  : "text-muted-foreground",
-              ].join(" ")}
+      <CardContent className="space-y-3 p-4 sm:p-3">
+        {/* Header */}
+        <div className="flex items-center justify-between gap-3">
+          <p className="truncate text-base text-muted-foreground">
+            {alarmLabel}
+          </p>
+
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              onClick={onEdit}
+              aria-label={`Edit ${alarmLabel}`}
             >
-              <span className="font-mono text-4xl font-medium tracking-tight sm:text-5xl">
-                {time}
-              </span>
+              <LucidePen />
+            </Button>
 
-              <span className="text-sm font-medium">
-                {period}
-              </span>
-            </div>
-
-            <div className="mt-2 flex min-w-0 flex-wrap items-center gap-2">
-              <p className="max-w-full truncate text-sm font-medium">
-                {alarmName}
-              </p>
-
-              <Badge
-                variant={
-                  alarm.enabled
-                    ? "default"
-                    : "secondary"
-                }
-                className="rounded-full"
-              >
-                {alarm.enabled
-                  ? "On"
-                  : "Off"}
-              </Badge>
-
-              <span className="text-xs text-muted-foreground">
-                Once
-              </span>
-            </div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              onClick={onDelete}
+              aria-label={`Delete ${alarmLabel}`}
+            >
+              <LucideTrash />
+            </Button>
           </div>
+        </div>
 
-          <div className="flex shrink-0 items-center gap-1">
-            <Switch
-              checked={
-                alarm.enabled
-              }
-              onCheckedChange={
-                onToggle
-              }
-              aria-label={`${
-                alarm.enabled
-                  ? "Disable"
-                  : "Enable"
-              } ${alarmName}`}
-            />
+        {/* Time */}
+        <div className="flex items-end gap-2">
+          <p className="font-mono text-2xl">
+            {displayTime.hour}:
+            {displayTime.minute}{" "}
+            <span className="text-sm text-muted-foreground">
+              {displayTime.meridiem}
+            </span>
+          </p>
+        </div>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                
-              >
-                <Button
-                  type="button"
-                  size="icon"
-                  variant="ghost"
-                  aria-label={`Actions for ${alarmName}`}
-                >
-                  <MoreHorizontal />
-                </Button>
-              </DropdownMenuTrigger>
+        {/* Remaining time */}
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-sm text-muted-foreground">
+            {remainingTime}
+          </p>
 
-              <DropdownMenuContent
-                align="end"
-              >
-                <DropdownMenuItem
-                  onClick={onEdit}
-                >
-                  <Pencil />
-                  Edit
-                </DropdownMenuItem>
-
-                <DropdownMenuSeparator />
-
-                <DropdownMenuItem
-                  onClick={onDelete}
-                  className="text-destructive focus:text-destructive"
-                >
-                  <Trash2 />
-                  Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          <Switch
+            checked={alarm.enabled}
+            onCheckedChange={
+              onToggle
+            }
+            aria-label={
+              alarm.enabled
+                ? `Disable ${alarmLabel}`
+                : `Enable ${alarmLabel}`
+            }
+          />
         </div>
       </CardContent>
     </Card>
