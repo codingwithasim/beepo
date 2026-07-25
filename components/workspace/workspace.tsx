@@ -1,6 +1,7 @@
 "use client";
 
 import { useUIStore } from "../stores/ui-store";
+import { Alarms } from "../tools/alarms/alarms";
 import { PomodoroTool } from "../tools/pomodoro/pomodoro";
 import { StopwatchTool } from "../tools/stopwatch/stopwatch";
 import { TimerTool } from "../tools/timer/timer";
@@ -17,7 +18,7 @@ export function Workspace() {
         {activeTool === "stopwatch" && <StopwatchTool />}
         {activeTool === "pomodoro" && <PomodoroTool />}
         {activeTool === "world-clock" && <WorldClockTool />}
-        {/* {activeTool === "alarms" && <AlarmsTool />} */}
+        {activeTool === "alarms" && <Alarms />}
       </div>
     </main>
   );

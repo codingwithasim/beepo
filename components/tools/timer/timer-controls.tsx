@@ -32,7 +32,7 @@ export function TimerControls({
               <Button
                 key={stamp}
                 variant={"ghost"}
-                className="cursor-pointer text-black/40 hover:bg-background"
+                className="cursor-pointer text-black/50 dark:text-white/50 hover:bg-background"
                 onClick={()=> actions?.addTime?.(stamp * 60)}
               >
                 +{stamp} min
