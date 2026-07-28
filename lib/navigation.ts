@@ -3,6 +3,7 @@ import {
   AlarmClock,
   Clock3,
   Globe2,
+  MessageCircleWarning,
   Settings,
   Timer,
   TimerReset,
@@ -35,6 +36,11 @@ export const navigation = [
     icon: AlarmClock,
     href: "/alarms",
   },
+  {
+    title: "Feedback",
+    icon: MessageCircleWarning,
+    href: "/feedback"
+  }
 ];
 
 export const bottomNavigation = [

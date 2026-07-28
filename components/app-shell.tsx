@@ -2,7 +2,6 @@
 
 import { TopBar } from "./header/top-bar";
 import { AppSidebar } from "./sidebar/app-sidebar";
-import { TimezoneCard } from "./timezone-card";
 import { Workspace } from "./workspace/workspace";
 import { RightPanel } from "@/components/right-panel/right-panel";
 

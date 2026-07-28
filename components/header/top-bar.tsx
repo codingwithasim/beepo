@@ -9,6 +9,7 @@ import { useSidebar } from "@/components/ui/sidebar";
 import { useUIStore } from "../stores/ui-store";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { useTheme } from "next-themes";
+import { MobileRightPanel } from "../right-panel/mobile-right-panel";
 
 const toolLabels: Record<string, string> = {
   timer: "Timer",
@@ -16,6 +17,7 @@ const toolLabels: Record<string, string> = {
   pomodoro: "Pomodoro",
   "world-clock": "World Clock",
   alarms: "Alarms",
+  feedback: "Feedback",
 };
 
 export function TopBar() {
@@ -46,7 +48,7 @@ export function TopBar() {
   }, [is24Hour]);
 
   return (
-    <header className="flex h-14 items-center justify-between border-b px-4">
+    <header className="flex h-16 items-center justify-between border-b px-4">
       {/* LEFT */}
       <div className="flex items-center gap-3">
         <Button variant="ghost" size="icon" onClick={toggleSidebar}>
@@ -111,6 +113,10 @@ export function TopBar() {
             </p>
           </TooltipContent>
         </Tooltip>
+
+
+        <MobileRightPanel/>
+
 
       </div>
     </header>

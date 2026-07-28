@@ -13,6 +13,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 
 import { bottomNavigation, navigation } from "@/lib/navigation";
@@ -20,6 +21,14 @@ import { Clock4 } from "lucide-react";
 
 export function AppSidebar() {
   const pathname = usePathname();
+
+  const {isMobile, setOpenMobile} = useSidebar()
+
+  const handleItemClick = ()=> {
+    if(isMobile){
+      setOpenMobile(false)
+    }
+  }
 
   return (
     <Sidebar collapsible="icon">
@@ -52,6 +61,7 @@ export function AppSidebar() {
                   <SidebarMenuButton
                     tooltip={item.title}
                     isActive={pathname === item.href}
+                    onClick={handleItemClick}
                     render={
                       <Link href={item.href}>
                         <item.icon className="size-4" />
