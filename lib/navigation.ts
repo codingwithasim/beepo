@@ -43,10 +43,3 @@ export const navigation = [
   }
 ];
 
-export const bottomNavigation = [
-  {
-    title: "Settings",
-    icon: Settings,
-    href: "/settings",
-  },
-];

@@ -2,14 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useUIStore } from "@/components/stores/ui-store";
-import { playAlarm } from "@/lib/play-alarm";
 
 type Mode = "focus" | "shortBreak" | "longBreak";
 
 const CONFIG = {
-  focus: 2 * 1,
-  shortBreak: 5 * 1,
-  longBreak: 3 * 2,
+  focus: 25 * 60,
+  shortBreak: 5 * 60,
+  longBreak: 15 * 60,
   cyclesBeforeLongBreak: 4,
 };
 

@@ -11,8 +11,7 @@ import { useTimer } from "./use-timer";
 import { useTimerStore } from "@/stores/timer-store";
 
 export function TimerTool() {
-  // const timer = useTimer(25 * 60);
-  const timer = useTimer(5);
+  const timer = useTimer(25 * 60);
 
   const setActions = useTimerStore((s) => s.setActions)
 

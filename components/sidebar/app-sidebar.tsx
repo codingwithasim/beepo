@@ -16,8 +16,9 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-import { bottomNavigation, navigation } from "@/lib/navigation";
-import { Clock4 } from "lucide-react";
+import { navigation } from "@/lib/navigation";
+import { Clock4, Settings } from "lucide-react";
+import { Badge } from "../ui/badge";
 
 export function AppSidebar() {
   const pathname = usePathname();
@@ -80,20 +81,17 @@ export function AppSidebar() {
 
       <SidebarFooter className="border-t">
         <SidebarMenu>
-          {bottomNavigation.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton
-                tooltip={item.title}
-                isActive={pathname === item.href}
-                render={
-                  <Link href={item.href}>
-                    <item.icon className="size-4" />
-                    <span>{item.title}</span>
-                  </Link>
-                }>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              tooltip={"Settings"}
+              className="cursor-pointer">
+              <Settings/>
+              Settings
+              <Badge 
+                variant={"secondary"}
+                className="ml-auto">Coming soon</Badge>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>

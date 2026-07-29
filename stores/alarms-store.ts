@@ -74,7 +74,7 @@ type AlarmStore = {
   triggerAlarm: (
     id: string,
     date: string
-  ) => void;
+  ) => boolean;
 
   getAlarm: (
     id: string
