@@ -1,18 +1,20 @@
 "use client";
 
 import {
+  useCallback,
   useEffect,
+  useRef,
   useState,
 } from "react";
 
-import Script from "next/script";
+import Clarity from "@microsoft/clarity";
+import { LucideCookie } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
 } from "@/components/ui/card";
-import { LucideCookie } from "lucide-react";
 
 const CONSENT_STORAGE_KEY =
   "chrona-analytics-consent";
@@ -21,66 +23,68 @@ type AnalyticsConsent =
   | "granted"
   | "denied";
 
-declare global {
-  interface Window {
-    clarity?: (
-      command: string,
-      ...args: unknown[]
-    ) => void;
-  }
-}
-
-function sendConsent(
-  consent: AnalyticsConsent
-) {
-  window.clarity?.("consentv2", {
-    // "denied" cause Chrona does not use Clarity for advertising.
-    ad_Storage: "denied",
-
-    analytics_Storage: consent,
-  });
-}
+type ConsentState =
+  | AnalyticsConsent
+  | null
+  | "loading";
 
 function getStoredConsent():
   | AnalyticsConsent
   | null {
-  const stored =
-    window.localStorage.getItem(
-      CONSENT_STORAGE_KEY
-    );
+  try {
+    const stored =
+      window.localStorage.getItem(
+        CONSENT_STORAGE_KEY
+      );
 
-  if (
-    stored === "granted" ||
-    stored === "denied"
-  ) {
-    return stored;
+    if (
+      stored === "granted" ||
+      stored === "denied"
+    ) {
+      return stored;
+    }
+
+    return null;
+  } catch {
+    return null;
   }
-
-  return null;
 }
 
-function ClarityConsentBanner() {
-  const [consent, setConsent] =
-    useState<
-      AnalyticsConsent | null | "loading"
-    >("loading");
-
-  useEffect(() => {
-    setConsent(getStoredConsent());
-  }, []);
-
-  function selectConsent(
-    value: AnalyticsConsent
-  ) {
+function storeConsent(
+  consent: AnalyticsConsent
+) {
+  try {
     window.localStorage.setItem(
       CONSENT_STORAGE_KEY,
-      value
+      consent
     );
-
-    setConsent(value);
-    sendConsent(value);
+  } catch {
+    // Analytics consent still applies for
+    // this page, even if storage is blocked.
   }
+}
 
+function applyClarityConsent(
+  consent: AnalyticsConsent
+) {
+  Clarity.consentV2({
+    // Chrona does not use Clarity for advertising.
+    ad_Storage: "denied",
+    analytics_Storage: consent,
+  });
+}
+
+type ClarityConsentBannerProps = {
+  consent: ConsentState;
+  onSelect: (
+    value: AnalyticsConsent
+  ) => void;
+};
+
+function ClarityConsentBanner({
+  consent,
+  onSelect,
+}: ClarityConsentBannerProps) {
   if (
     consent === "loading" ||
     consent !== null
@@ -89,41 +93,75 @@ function ClarityConsentBanner() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-100 w-[390px] max-w-[calc(100vw-2rem)]">
+    <div
+      className="
+        fixed
+        inset-x-4
+        bottom-[max(1rem,env(safe-area-inset-bottom))]
+        z-100
+        sm:inset-x-auto
+        sm:bottom-6
+        sm:right-6
+        sm:w-[390px]
+      "
+    >
       <Card
         role="dialog"
-        aria-label="Analytics preferences"
-        className="shadow-xl"
+        aria-modal="false"
+        aria-labelledby="analytics-consent-title"
+        aria-describedby="analytics-consent-description"
+        className="rounded-xl bg-background shadow-xl"
       >
-        <CardContent className="space-y-4 px-5">
+        <CardContent className="space-y-4 p-5">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <LucideCookie className="size-4 text-primary" />
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted">
+                <LucideCookie className="size-4" />
+              </div>
 
-              <p className="text-sm font-semibold">
+              <p
+                id="analytics-consent-title"
+                className="text-sm font-semibold"
+              >
                 Help improve Chrona
               </p>
             </div>
 
-            <p className="text-sm leading-6 text-muted-foreground">
-              Allow anonymous analytics to help us understand how Chrona is used and improve future updates. <span className="font-medium text-foreground">We don't collect personal information or show ads</span>.
+            <p
+              id="analytics-consent-description"
+              className="text-sm leading-6 text-muted-foreground"
+            >
+              Allow usage analytics and
+              privacy-masked session recordings
+              to help understand how Chrona is
+              used and improve future updates.{" "}
+              <span className="font-medium text-foreground">
+                This data is not used for
+                advertising.
+              </span>
             </p>
           </div>
 
-          <div className="flex justify-end gap-2">
+          <div className="flex flex-col-reverse gap-2 min-[380px]:flex-row min-[380px]:justify-end">
             <Button
+              type="button"
               variant="outline"
               size="sm"
-              onClick={() => selectConsent("denied")}
+              onClick={() =>
+                onSelect("denied")
+              }
             >
               Not now
             </Button>
 
             <Button
+              type="button"
               size="sm"
-              onClick={() => selectConsent("granted")}
+              onClick={() =>
+                onSelect("granted")
+              }
             >
-              Help improve
+              Allow analytics
             </Button>
           </div>
         </CardContent>
@@ -133,63 +171,102 @@ function ClarityConsentBanner() {
 }
 
 export function ClarityAnalytics() {
-  const projectId =
-    process.env
-      .NEXT_PUBLIC_CLARITY_PROJECT_ID;
+  const initializedRef =
+    useRef(false);
+
+  const [consent, setConsent] =
+    useState<ConsentState>(
+      "loading"
+    );
 
   const enabled =
     process.env
       .NEXT_PUBLIC_CLARITY_ENABLED ===
-      "true";
+    "true";
 
-  const validProjectId =
-    Boolean(projectId) &&
-    /^[a-zA-Z0-9]+$/.test(
-      projectId ?? ""
+  const projectId =
+    process.env
+      .NEXT_PUBLIC_CLARITY_PROJECT_ID;
+
+  useEffect(() => {
+    const storedConsent =
+      getStoredConsent();
+
+    setConsent(storedConsent);
+
+    if (!enabled) {
+      console.info(
+        "[Clarity] Disabled"
+      );
+
+      return;
+    }
+
+    if (!projectId) {
+      console.error(
+        "[Clarity] Project ID missing"
+      );
+
+      return;
+    }
+
+    if (initializedRef.current) {
+      return;
+    }
+
+    initializedRef.current = true;
+
+    try {
+      Clarity.init(projectId);
+
+      console.info(
+        "[Clarity] Initialized"
+      );
+
+      if (storedConsent) {
+        applyClarityConsent(
+          storedConsent
+        );
+      }
+    } catch (error) {
+      initializedRef.current = false;
+
+      console.error(
+        "[Clarity] Initialization error",
+        error
+      );
+    }
+  }, [enabled, projectId]);
+
+  const selectConsent =
+    useCallback(
+      (
+        value: AnalyticsConsent
+      ) => {
+        storeConsent(value);
+        setConsent(value);
+
+        if (
+          enabled &&
+          projectId &&
+          initializedRef.current
+        ) {
+          applyClarityConsent(
+            value
+          );
+        }
+      },
+      [enabled, projectId]
     );
 
-  if (!enabled || !validProjectId) {
+  if (!enabled || !projectId) {
     return null;
   }
 
   return (
-    <>
-      <Script
-        id="microsoft-clarity"
-        strategy="afterInteractive"
-        onLoad={() => {
-          const consent =
-            getStoredConsent();
-
-          if (consent) {
-            sendConsent(consent);
-          }
-        }}
-        dangerouslySetInnerHTML={{
-          __html: `
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){
-                (c[a].q=c[a].q||[]).push(arguments)
-              };
-
-              t=l.createElement(r);
-              t.async=1;
-              t.src="https://www.clarity.ms/tag/"+i;
-
-              y=l.getElementsByTagName(r)[0];
-              y.parentNode.insertBefore(t,y);
-            })(
-              window,
-              document,
-              "clarity",
-              "script",
-              "${projectId}"
-            );
-          `,
-        }}
-      />
-
-      <ClarityConsentBanner />
-    </>
+    <ClarityConsentBanner
+      consent={consent}
+      onSelect={selectConsent}
+    />
   );
 }
