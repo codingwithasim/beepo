@@ -60,6 +60,7 @@ export function AlarmCard({
           ? "opacity-60"
           : "",
       ].join(" ")}
+      data-clarity-mask="true"
     >
       <CardContent className="space-y-3 p-4 sm:p-3">
         {/* Header */}

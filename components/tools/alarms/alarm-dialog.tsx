@@ -136,7 +136,9 @@ export function AlarmDialog({
           </DialogHeader>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form 
+          onSubmit={handleSubmit}
+          data-clarity-mask="true">
           {/* Fields */}
           <div className="space-y-4 px-5 py-5">
             <div className="space-y-2">
