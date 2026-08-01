@@ -225,7 +225,7 @@ export function FeedbackForm() {
 
             <p className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">
               Thank you for helping
-              improve Beepo. Your
+              improve Chrona. Your
               feedback has been
               received.
             </p>
@@ -355,7 +355,7 @@ export function FeedbackForm() {
                       ? "What happened? Include what you expected and the steps that caused the problem."
                       : type ===
                           "improvement"
-                        ? "What would you like Beepo to do differently?"
+                        ? "What would you like Chrona to do differently?"
                         : "Share your feedback..."
                   }
                   onChange={(
@@ -488,7 +488,7 @@ export function FeedbackForm() {
               </CardTitle>
 
               <p className="text-xs leading-5 text-muted-foreground">
-                Follow Beepo updates or
+                Follow Chrona updates or
                 contact the developer
                 directly.
               </p>
@@ -575,7 +575,7 @@ export function FeedbackForm() {
                 </li>
 
                 <li>
-                  Include the Beepo tool
+                  Include the Chrona tool
                   where the issue
                   occurred.
                 </li>

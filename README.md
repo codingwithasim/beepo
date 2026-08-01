@@ -1,6 +1,6 @@
-# Beepo ⏰
+# Chrona ⏰
 
-Beepo is a modern productivity clock application built with **Next.js**, **React**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**. It brings together essential time management tools—including a timer, stopwatch, Pomodoro timer, world clock, and alarms—into a clean, responsive interface.
+Chrona is a modern productivity clock application built with **Next.js**, **React**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**. It brings together essential time management tools—including a timer, stopwatch, Pomodoro timer, world clock, and alarms—into a clean, responsive interface.
 
 > **Status:** 🚧 Currently under development.
 
@@ -49,8 +49,8 @@ This separation keeps UI and functionality modular and easy to maintain.
 ### Clone the repository
 
 ```sh
-git clone https://github.com/codingwithasim/beepo.git
-cd beepo
+git clone https://github.com/codingwithasim/chrona.git
+cd chrona
 ```
 
 ### Install dependencies
@@ -71,7 +71,7 @@ Open http://localhost:3000 in your browser.
 
 ## Design Goals
 
-Beepo aims to be:
+Chrona aims to be:
 
 * Minimal and distraction-free
 * Fast and lightweight

@@ -44,7 +44,7 @@ export function AppSidebar() {
 
           <div className="min-w-0 group-data-[collapsible=icon]:hidden">
             <h2 className="truncate text-sm font-semibold tracking-tight">
-              Beepo
+              Chrona
             </h2>
             <p className="truncate text-xs text-muted-foreground">
               Time made fun

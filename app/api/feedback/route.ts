@@ -185,7 +185,7 @@ export async function POST(
         replyTo:
           email || undefined,
 
-        subject: `[Beepo] ${typeLabel}`,
+        subject: `[Chrona] ${typeLabel}`,
 
         text: [
           `Type: ${typeLabel}`,

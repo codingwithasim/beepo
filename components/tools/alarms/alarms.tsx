@@ -49,7 +49,7 @@ export function Alarms() {
             </h1>
 
             <p className="mt-1 text-sm text-muted-foreground">
-              Alarms ring while Beepo is open
+              Alarms ring while Chrona is open
             </p>
           </div>
 

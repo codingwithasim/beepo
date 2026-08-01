@@ -39,7 +39,7 @@ export function TopBar() {
   const [is24Hour, setIs24Hour] = useState(false);
 
   const currentToolLabel =
-    toolLabels[pathname] ?? "Beepo";
+    toolLabels[pathname] ?? "Chrona";
 
   useEffect(() => {
     function updateTime() {
