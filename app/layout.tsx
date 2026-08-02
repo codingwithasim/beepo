@@ -6,6 +6,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClarityAnalytics } from "@/components/analytics/clarity-analytics";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/next"
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans', display: "swap"});
 
@@ -30,6 +31,7 @@ export default function RootLayout({
           <TooltipProvider delay={1000}>
             <ThemeProvider>
               {children}
+              <VercelAnalytics/>
               <ClarityAnalytics/>
             </ThemeProvider>            
           </TooltipProvider>
