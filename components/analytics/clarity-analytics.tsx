@@ -112,7 +112,7 @@ function ClarityConsentBanner({
         aria-describedby="analytics-consent-description"
         className="rounded-xl bg-background shadow-xl"
       >
-        <CardContent className="space-y-4 p-5">
+        <CardContent className="space-y-4 px-5">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted">

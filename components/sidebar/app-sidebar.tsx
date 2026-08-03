@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import { navigation } from "@/lib/navigation";
-import { Clock4, Settings } from "lucide-react";
+import { ChevronsUpDown, Clock4, InfinityIcon, LucideGalleryThumbnails, Settings } from "lucide-react";
 import { Badge } from "../ui/badge";
 
 export function AppSidebar() {
@@ -34,23 +34,29 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="border-b">
-        <Link
-          href="/"
-          className="flex items-center gap-3 p-2 transition-opacity hover:opacity-90 group-data-[collapsible=icon]:justify-center"
-        >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-            <Clock4 className="size-5" />
-          </div>
+        <SidebarMenu>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton size={"lg"} render={
+                <Link
+                  href="/">
+                  <div className="aspect-square size-8 rounded-sm text-sidebar-primary-foreground grid place-items-center bg-primary relative">
+                    <InfinityIcon className="size-4" />
+                  </div>
 
-          <div className="min-w-0 group-data-[collapsible=icon]:hidden">
-            <h2 className="truncate text-sm font-semibold tracking-tight">
-              Chrona
-            </h2>
-            <p className="truncate text-xs text-muted-foreground">
-              Time made fun
-            </p>
-          </div>
-        </Link>
+                  <div className="min-w-0 group-data-[collapsible=icon]:hidden">
+                    <h2 className="truncate font-semibold tracking-tight">
+                      Chrona
+                    </h2>
+                    <p className="truncate text-xs text-muted-foreground">
+                      Time made fun
+                    </p>
+                  </div>
+                </Link>
+              } />
+            </SidebarMenuItem>
+        </SidebarMenu>
+        </SidebarMenu>
       </SidebarHeader>
 
       <SidebarContent>
